@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OESM-SP | Visão territorial</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+  </head>
+  <body data-page="territories">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <img src="assets/img/logo.svg" alt="Logotipo do OESM-SP">
+          <div class="brand-copy">
+            <span class="brand-kicker">Observatório estratégico</span>
+            <strong class="brand-title">OESM-SP</strong>
+            <span class="brand-subtitle">Saúde mental orientada por dados</span>
+          </div>
+        </div>
+
+        <nav class="nav-group" aria-label="Navegação principal">
+          <span class="nav-label">Navegação</span>
+          <a class="nav-link" data-nav="dashboard" href="dashboard.html"><span class="nav-icon">DX</span><span>Dashboard executivo</span></a>
+          <a class="nav-link" data-nav="territories" href="territorios.html"><span class="nav-icon">TR</span><span>Visão territorial</span></a>
+          <a class="nav-link" data-nav="patients" href="pacientes.html"><span class="nav-icon">PC</span><span>Pacientes priorizados</span></a>
+          <a class="nav-link" data-nav="patient" data-case-link="paciente.html" href="paciente.html?id=PCT-001"><span class="nav-icon">CS</span><span>Caso prioritário</span></a>
+          <a class="nav-link" data-nav="referral" data-case-link="encaminhamento.html" href="encaminhamento.html?id=PCT-001"><span class="nav-icon">PL</span><span>Plano de seguimento</span></a>
+          <a class="nav-link" data-nav="followup" data-case-link="acompanhamento.html" href="acompanhamento.html?id=PCT-001"><span class="nav-icon">AC</span><span>Acompanhamento</span></a>
+          <a class="nav-link" data-nav="impact" href="impacto.html"><span class="nav-icon">IM</span><span>Painel de impacto</span></a>
+        </nav>
+
+        <div class="sidebar-foot">
+          <strong>Leitura territorial</strong>
+          <span>Representação simulada de pressão assistencial, cobertura da rede e desertos de atendimento.</span>
+        </div>
+      </aside>
+
+      <div class="main-shell">
+        <header class="topbar">
+          <div>
+            <div class="breadcrumb"><span>OESM-SP</span><span class="dot"></span><span>Visão territorial</span></div>
+            <h1 class="page-title">Territórios críticos e desigualdade de cobertura</h1>
+            <p class="page-subtitle">
+              Painel territorial simulado para localizar áreas sob maior pressão, fluxos intermunicipais e desertos de atendimento.
+            </p>
+          </div>
+          <div class="topbar-meta">
+            <div class="generated-at" id="generatedAt"></div>
+            <div class="profile-badge">
+              <span class="profile-avatar">MT</span>
+              <div class="profile-copy">
+                <strong id="userProfileName">Marina Torres</strong>
+                <span id="userProfileRole">Coordenação Estadual de Saúde Mental • SES-SP</span>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <main class="page-content">
+          <section class="panel filter-bar">
+            <div class="panel-header">
+              <div>
+                <h2 class="panel-title">Filtros territoriais</h2>
+                <p class="panel-subtitle">Recortes simples para explorar desigualdades por município, perfil demográfico e seguimento.</p>
+              </div>
+            </div>
+            <div class="filter-row">
+              <div class="field">
+                <label for="territoryMunicipioFilter">Município</label>
+                <select id="territoryMunicipioFilter"></select>
+              </div>
+              <div class="field">
+                <label for="territorySexoFilter">Sexo</label>
+                <select id="territorySexoFilter">
+                  <option>Todos</option>
+                  <option>Feminino</option>
+                  <option>Masculino</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="territoryFaixaFilter">Faixa etária</label>
+                <select id="territoryFaixaFilter">
+                  <option>Todos</option>
+                  <option>15-24</option>
+                  <option>25-39</option>
+                  <option>40-59</option>
+                  <option>60+</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="territoryRecorrenciaFilter">Recorrência</label>
+                <select id="territoryRecorrenciaFilter">
+                  <option>Todos</option>
+                  <option>Recorrente</option>
+                  <option>Primeiro evento</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="territorySeguimentoFilter">Status de seguimento</label>
+                <select id="territorySeguimentoFilter">
+                  <option>Todos</option>
+                  <option>Sem seguimento</option>
+                  <option>Em seguimento</option>
+                </select>
+              </div>
+            </div>
+            <div class="territory-filter-summary" id="territoryFilterSummary"></div>
+          </section>
+
+          <section class="territory-layout">
+            <article class="panel">
+              <div class="panel-header">
+                <div>
+                  <h2 class="panel-title">Mapa simulado de risco territorial</h2>
+                  <p class="panel-subtitle">Clique em uma região para atualizar o painel lateral.</p>
+                </div>
+              </div>
+              <div class="map-shell">
+                <div class="map-panel">
+                  <div class="map-frame">
+                    <div class="map-grid-lines"></div>
+                    <svg viewBox="0 0 780 470" aria-label="Mapa simulado de regiões críticas">
+                      <g class="map-region" data-region="NN" data-region-target="NN">
+                        <path class="map-shape" d="M90 80 L255 70 L300 150 L250 220 L120 210 L72 145 Z"></path>
+                        <text class="map-label" x="182" y="144">Norte-Noroeste</text>
+                        <text class="map-score" data-region-badge="NN" x="182" y="165">68</text>
+                      </g>
+                      <g class="map-region" data-region="CE" data-region-target="CE">
+                        <path class="map-shape" d="M290 148 L420 118 L500 198 L450 295 L310 278 L260 220 Z"></path>
+                        <text class="map-label" x="380" y="208">Centro Expandido</text>
+                        <text class="map-score" data-region-badge="CE" x="380" y="229">63</text>
+                      </g>
+                      <g class="map-region" data-region="AT" data-region-target="AT">
+                        <path class="map-shape" d="M515 85 L675 110 L710 228 L598 275 L502 199 Z"></path>
+                        <text class="map-label" x="604" y="168">Alto Tietê</text>
+                        <text class="map-score" data-region-badge="AT" x="604" y="189">76</text>
+                      </g>
+                      <g class="map-region" data-region="ZL" data-region-target="ZL">
+                        <path class="map-shape" d="M505 235 L650 255 L708 370 L586 430 L458 362 L438 286 Z"></path>
+                        <text class="map-label" x="580" y="320">Zona Leste</text>
+                        <text class="map-score" data-region-badge="ZL" x="580" y="341">84</text>
+                      </g>
+                      <g class="map-region" data-region="ABC" data-region-target="ABC">
+                        <path class="map-shape" d="M165 250 L305 286 L334 400 L220 425 L114 370 L96 290 Z"></path>
+                        <text class="map-label" x="214" y="337">Sul e Grande ABC</text>
+                        <text class="map-score" data-region-badge="ABC" x="214" y="358">79</text>
+                      </g>
+                      <g class="map-region" data-region="BS" data-region-target="BS">
+                        <path class="map-shape" d="M350 332 L452 366 L486 446 L372 452 L314 404 Z"></path>
+                        <text class="map-label" x="394" y="399">Baixada Santista</text>
+                        <text class="map-score" data-region-badge="BS" x="394" y="420">58</text>
+                      </g>
+                    </svg>
+                  </div>
+                </div>
+                <div id="territoryCards" class="quick-actions"></div>
+              </div>
+            </article>
+
+            <article class="panel">
+              <div class="panel-header">
+                <div>
+                  <h2 class="panel-title">Leitura do território</h2>
+                  <p class="panel-subtitle">Cobertura, pressão assistencial e fluxo intermunicipal.</p>
+                </div>
+              </div>
+              <div id="territoryDetail"></div>
+              <div class="compact-list" id="territorySideCards"></div>
+            </article>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <script src="assets/js/data-loader.js"></script>
+    <script src="assets/js/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,76 @@
+{
+  "PCT-001": {
+    "responsibleTeam": "Núcleo Regional Leste / Apoiadora de rede",
+    "daysWithoutContact": 8,
+    "currentStatus": "Contato pendente",
+    "delayAlert": "Alta hospitalar não acompanhada por contato efetivo em até 7 dias.",
+    "caseTimeline": [
+      {
+        "date": "2026-03-28T21:10:00-03:00",
+        "title": "Alta hospitalar com indicação de seguimento intensivo",
+        "type": "event",
+        "details": "Saída de leito psiquiátrico em hospital geral. Residência em Itaquaquecetuba e atendimento de referência em São Paulo."
+      },
+      {
+        "date": "2026-03-29T08:15:00-03:00",
+        "title": "Score de risco recalculado para 92",
+        "type": "analysis",
+        "details": "Recorrência, pós-alta recente, barreira territorial e vulnerabilidade social ampliaram a prioridade do caso."
+      },
+      {
+        "date": "2026-03-29T10:40:00-03:00",
+        "title": "CAPS III sinalizado em pré-alerta",
+        "type": "network",
+        "details": "Equipe regional registrou necessidade de acolhimento intensivo em até 24 horas após confirmação de referência."
+      },
+      {
+        "date": "2026-03-31T15:05:00-03:00",
+        "title": "Tentativa de contato sem resposta",
+        "type": "alert",
+        "details": "Ligação não completada e ausência de retorno. Caso mantido na fila prioritária de seguimento."
+      },
+      {
+        "date": "2026-04-04T09:20:00-03:00",
+        "title": "Alerta de continuidade emitido",
+        "type": "alert",
+        "details": "Sem acolhimento confirmado em até 7 dias. Sistema recomenda plano integrado CAPS, UBS e assistência social."
+      }
+    ],
+    "followUpTimeline": [
+      {
+        "date": "2026-04-05T08:30:00-03:00",
+        "title": "Caso priorizado para monitoramento pós-alta",
+        "type": "analysis",
+        "details": "Painel executivo destacou o caso entre os pacientes com maior risco de ruptura."
+      },
+      {
+        "date": "2026-04-06T11:20:00-03:00",
+        "title": "Coordenação regional solicitou acionamento integrado",
+        "type": "network",
+        "details": "Indicação de comunicação simultânea entre CAPS, UBS do território e assistência social."
+      }
+    ],
+    "planTemplate": {
+      "services": [
+        {
+          "key": "caps",
+          "name": "CAPS III Itaim Paulista",
+          "description": "Acolhimento intensivo e definição de referência clínica em até 24 horas."
+        },
+        {
+          "key": "ubs",
+          "name": "UBS Jardim Romano",
+          "description": "Contato territorial para reconexão do cuidado e apoio à adesão."
+        },
+        {
+          "key": "social",
+          "name": "CRAS Jardim Helena",
+          "description": "Apoio para barreiras sociais, transporte e retaguarda familiar."
+        }
+      ],
+      "returnDeadline": "2026-04-11",
+      "priority": "Alta",
+      "observation": "Realizar primeiro contato articulado com território de residência e registrar retorno em até 72 horas."
+    }
+  }
+}

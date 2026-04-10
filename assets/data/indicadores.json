@@ -1,0 +1,201 @@
+{
+  "systemName": "OESM-SP",
+  "subtitle": "Observatório Estratégico de Saúde Mental de São Paulo",
+  "disclaimer": "Ambiente demonstrativo com dados fictícios para fins acadêmicos.",
+  "generatedAt": "2026-04-09T09:30:00-03:00",
+  "mainCaseId": "PCT-001",
+  "user": {
+    "name": "Marina Torres",
+    "role": "Coordenação Estadual de Saúde Mental",
+    "institution": "SES-SP"
+  },
+  "dashboardCards": [
+    {
+      "id": "highRisk",
+      "label": "Pacientes em alto risco",
+      "value": 38,
+      "delta": "+6 vs. semana anterior",
+      "trend": "up",
+      "context": "16 com deslocamento intermunicipal"
+    },
+    {
+      "id": "noFollowUp",
+      "label": "Casos sem seguimento em 7 dias",
+      "value": 14,
+      "delta": "-3 após mutirão regional",
+      "trend": "down",
+      "context": "Maior pressão na Zona Leste Metropolitana"
+    },
+    {
+      "id": "criticalTerritories",
+      "label": "Territórios críticos",
+      "value": 3,
+      "delta": "1 novo território em alerta",
+      "trend": "up",
+      "context": "Foco em cobertura e fluxo intermunicipal"
+    },
+    {
+      "id": "pendingReferrals",
+      "label": "Encaminhamentos pendentes",
+      "value": 22,
+      "delta": "9 com prioridade clínica e social",
+      "trend": "neutral",
+      "context": "CAPS, UBS e assistência social"
+    }
+  ],
+  "trendSeries": [
+    {
+      "label": "Sem 1",
+      "value": 28
+    },
+    {
+      "label": "Sem 2",
+      "value": 31
+    },
+    {
+      "label": "Sem 3",
+      "value": 29
+    },
+    {
+      "label": "Sem 4",
+      "value": 34
+    },
+    {
+      "label": "Sem 5",
+      "value": 36
+    },
+    {
+      "label": "Sem 6",
+      "value": 38
+    }
+  ],
+  "alerts": [
+    {
+      "title": "A. S. M. sem acolhimento após alta psiquiátrica",
+      "category": "Alto risco",
+      "territory": "Zona Leste Metropolitana",
+      "status": "Ação imediata",
+      "patientId": "PCT-001",
+      "description": "Score 92, recorrência 3, 8 dias sem contato e residência fora do município de atendimento."
+    },
+    {
+      "title": "Aumento de rupturas no eixo Diadema-Santo André",
+      "category": "Fluxo intermunicipal",
+      "territory": "Eixo Sul e Grande ABC",
+      "status": "Monitorar 72h",
+      "patientId": "PCT-002",
+      "description": "Crescimento de 14% em casos com pós-alta recente e seguimento pendente."
+    },
+    {
+      "title": "Microáreas com baixa cobertura de CAPS III",
+      "category": "Deserto de atendimento",
+      "territory": "Alto Tietê",
+      "status": "Prioridade regional",
+      "patientId": "PCT-003",
+      "description": "Quatro microáreas concentram atraso de retorno e sobrecarga de referência hospitalar."
+    }
+  ],
+  "quickActions": [
+    {
+      "label": "Abrir lista priorizada",
+      "href": "pacientes.html",
+      "description": "Ordenar casos por risco, recorrência e ausência de seguimento"
+    },
+    {
+      "label": "Explorar territórios críticos",
+      "href": "territorios.html",
+      "description": "Visualizar zonas sob pressão assistencial e desertos de atendimento"
+    },
+    {
+      "label": "Acionar caso prioritário",
+      "href": "paciente.html?id=PCT-001",
+      "description": "Entrar direto no caso com maior score de risco desta semana"
+    },
+    {
+      "label": "Ver painel de impacto",
+      "href": "impacto.html",
+      "description": "Acompanhar redução de ruptura de cuidado e ganho de cobertura"
+    }
+  ],
+  "territorialSummary": {
+    "mostCritical": "Zona Leste Metropolitana",
+    "networkCoverage": "72%",
+    "crossFlow": "18%",
+    "deserts": "4 microáreas",
+    "highPressure": "3 regiões"
+  },
+  "impactCards": [
+    {
+      "label": "Redução de casos sem seguimento",
+      "value": "18%",
+      "detail": "Comparado ao ciclo anterior",
+      "tone": "success"
+    },
+    {
+      "label": "Pacientes acompanhados em até 7 dias",
+      "value": "71%",
+      "detail": "Meta pactuada de 75%",
+      "tone": "primary"
+    },
+    {
+      "label": "Territórios com melhora de cobertura",
+      "value": "3",
+      "detail": "Com expansão de resposta local",
+      "tone": "warning"
+    },
+    {
+      "label": "Tempo médio entre alta e primeiro contato",
+      "value": "4,9 dias",
+      "detail": "Queda de 1,6 dia no trimestre",
+      "tone": "primary"
+    }
+  ],
+  "impactSeries": [
+    {
+      "label": "Jan",
+      "semSeguimento": 148,
+      "ate7dias": 54,
+      "tempoMedio": 6.5
+    },
+    {
+      "label": "Fev",
+      "semSeguimento": 141,
+      "ate7dias": 59,
+      "tempoMedio": 6.1
+    },
+    {
+      "label": "Mar",
+      "semSeguimento": 133,
+      "ate7dias": 64,
+      "tempoMedio": 5.7
+    },
+    {
+      "label": "Abr",
+      "semSeguimento": 126,
+      "ate7dias": 68,
+      "tempoMedio": 5.3
+    },
+    {
+      "label": "Mai",
+      "semSeguimento": 122,
+      "ate7dias": 70,
+      "tempoMedio": 5.1
+    },
+    {
+      "label": "Jun",
+      "semSeguimento": 121,
+      "ate7dias": 71,
+      "tempoMedio": 4.9
+    }
+  ],
+  "strategicInsights": [
+    "A combinação entre recorrência, pós-alta recente e barreira territorial explica a maior parte dos casos com ruptura de seguimento.",
+    "O ganho de cobertura foi mais consistente onde CAPS e UBS passaram a operar com plano único de retorno em até 72 horas.",
+    "Fluxos intermunicipais continuam pressionando os territórios de fronteira e devem orientar pactuações regionais."
+  ],
+  "recommendedPriorities": [
+    "Ampliar resposta de seguimento rápido na Zona Leste Metropolitana com foco em alta hospitalar recente.",
+    "Padronizar plano de acionamento entre CAPS, UBS e assistência social para casos de prioridade clínica e social.",
+    "Monitorar semanalmente microáreas com deserto de atendimento e apoiar redistribuição regional de vagas."
+  ]
+}

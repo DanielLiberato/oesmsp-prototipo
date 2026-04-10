@@ -1,0 +1,242 @@
+[
+  {
+    "id": "ZL",
+    "regiao": "Zona Leste Metropolitana",
+    "municipios": ["São Paulo", "Itaquaquecetuba", "Ferraz de Vasconcelos"],
+    "risco_medio": 84,
+    "casos_sem_seguimento": 127,
+    "cobertura_caps": "Baixa",
+    "cobertura_rede": 61,
+    "fluxo_intermunicipal": 24,
+    "desertos_atendimento": 4,
+    "pressao_assistencial": "Muito alta",
+    "status": "Crítico",
+    "areas_pressao": 9,
+    "principal_alerta": "Alta hospitalar sem absorção rápida pela rede territorial.",
+    "lead_service": "CAPS III Itaim Paulista",
+    "segments": {
+      "sexo": {
+        "Todos": 84,
+        "Feminino": 86,
+        "Masculino": 81
+      },
+      "faixa_etaria": {
+        "Todos": 84,
+        "15-24": 88,
+        "25-39": 86,
+        "40-59": 80,
+        "60+": 73
+      },
+      "recorrencia": {
+        "Todos": 84,
+        "Recorrente": 91,
+        "Primeiro evento": 74
+      },
+      "seguimento_status": {
+        "Todos": 84,
+        "Sem seguimento": 92,
+        "Em seguimento": 76
+      }
+    }
+  },
+  {
+    "id": "ABC",
+    "regiao": "Eixo Sul e Grande ABC",
+    "municipios": ["Diadema", "Santo André", "São Bernardo do Campo", "Mauá"],
+    "risco_medio": 79,
+    "casos_sem_seguimento": 93,
+    "cobertura_caps": "Média",
+    "cobertura_rede": 69,
+    "fluxo_intermunicipal": 19,
+    "desertos_atendimento": 2,
+    "pressao_assistencial": "Alta",
+    "status": "Sob pressão",
+    "areas_pressao": 6,
+    "principal_alerta": "Fluxo intermunicipal crescente no pós-alta e vagas concentradas em poucos serviços.",
+    "lead_service": "CAPS AD Regional ABC",
+    "segments": {
+      "sexo": {
+        "Todos": 79,
+        "Feminino": 77,
+        "Masculino": 82
+      },
+      "faixa_etaria": {
+        "Todos": 79,
+        "15-24": 74,
+        "25-39": 83,
+        "40-59": 81,
+        "60+": 70
+      },
+      "recorrencia": {
+        "Todos": 79,
+        "Recorrente": 87,
+        "Primeiro evento": 69
+      },
+      "seguimento_status": {
+        "Todos": 79,
+        "Sem seguimento": 88,
+        "Em seguimento": 71
+      }
+    }
+  },
+  {
+    "id": "AT",
+    "regiao": "Alto Tietê",
+    "municipios": ["Suzano", "Mogi das Cruzes", "Poá"],
+    "risco_medio": 76,
+    "casos_sem_seguimento": 81,
+    "cobertura_caps": "Baixa",
+    "cobertura_rede": 64,
+    "fluxo_intermunicipal": 17,
+    "desertos_atendimento": 4,
+    "pressao_assistencial": "Alta",
+    "status": "Sob pressão",
+    "areas_pressao": 5,
+    "principal_alerta": "Deslocamento prolongado para atendimento especializado e retorno tardio à atenção básica.",
+    "lead_service": "CAPS II Mogi das Cruzes",
+    "segments": {
+      "sexo": {
+        "Todos": 76,
+        "Feminino": 78,
+        "Masculino": 74
+      },
+      "faixa_etaria": {
+        "Todos": 76,
+        "15-24": 82,
+        "25-39": 79,
+        "40-59": 74,
+        "60+": 67
+      },
+      "recorrencia": {
+        "Todos": 76,
+        "Recorrente": 84,
+        "Primeiro evento": 68
+      },
+      "seguimento_status": {
+        "Todos": 76,
+        "Sem seguimento": 85,
+        "Em seguimento": 70
+      }
+    }
+  },
+  {
+    "id": "CE",
+    "regiao": "Centro Expandido",
+    "municipios": ["São Paulo", "Osasco"],
+    "risco_medio": 63,
+    "casos_sem_seguimento": 52,
+    "cobertura_caps": "Média",
+    "cobertura_rede": 74,
+    "fluxo_intermunicipal": 11,
+    "desertos_atendimento": 1,
+    "pressao_assistencial": "Moderada",
+    "status": "Atenção",
+    "areas_pressao": 3,
+    "principal_alerta": "Alta rotatividade entre serviços de urgência e baixa adesão ao retorno programado.",
+    "lead_service": "CAPS Sé",
+    "segments": {
+      "sexo": {
+        "Todos": 63,
+        "Feminino": 61,
+        "Masculino": 65
+      },
+      "faixa_etaria": {
+        "Todos": 63,
+        "15-24": 67,
+        "25-39": 66,
+        "40-59": 62,
+        "60+": 58
+      },
+      "recorrencia": {
+        "Todos": 63,
+        "Recorrente": 71,
+        "Primeiro evento": 56
+      },
+      "seguimento_status": {
+        "Todos": 63,
+        "Sem seguimento": 75,
+        "Em seguimento": 58
+      }
+    }
+  },
+  {
+    "id": "NN",
+    "regiao": "Eixo Norte-Noroeste",
+    "municipios": ["Guarulhos", "Barueri", "Carapicuíba"],
+    "risco_medio": 68,
+    "casos_sem_seguimento": 61,
+    "cobertura_caps": "Média",
+    "cobertura_rede": 72,
+    "fluxo_intermunicipal": 15,
+    "desertos_atendimento": 2,
+    "pressao_assistencial": "Moderada",
+    "status": "Observação",
+    "areas_pressao": 4,
+    "principal_alerta": "Demanda de média complexidade deslocada para hospitais de referência da capital.",
+    "lead_service": "CAPS Guarulhos Norte",
+    "segments": {
+      "sexo": {
+        "Todos": 68,
+        "Feminino": 66,
+        "Masculino": 71
+      },
+      "faixa_etaria": {
+        "Todos": 68,
+        "15-24": 72,
+        "25-39": 70,
+        "40-59": 69,
+        "60+": 60
+      },
+      "recorrencia": {
+        "Todos": 68,
+        "Recorrente": 76,
+        "Primeiro evento": 59
+      },
+      "seguimento_status": {
+        "Todos": 68,
+        "Sem seguimento": 79,
+        "Em seguimento": 62
+      }
+    }
+  },
+  {
+    "id": "BS",
+    "regiao": "Baixada Santista Referenciada",
+    "municipios": ["Santos", "Praia Grande", "São Vicente"],
+    "risco_medio": 58,
+    "casos_sem_seguimento": 37,
+    "cobertura_caps": "Boa",
+    "cobertura_rede": 81,
+    "fluxo_intermunicipal": 9,
+    "desertos_atendimento": 1,
+    "pressao_assistencial": "Controlada",
+    "status": "Estável",
+    "areas_pressao": 2,
+    "principal_alerta": "Monitorar continuidade de cuidado para usuários que retornam à capital após internação.",
+    "lead_service": "CAPS III Santos",
+    "segments": {
+      "sexo": {
+        "Todos": 58,
+        "Feminino": 57,
+        "Masculino": 60
+      },
+      "faixa_etaria": {
+        "Todos": 58,
+        "15-24": 60,
+        "25-39": 62,
+        "40-59": 55,
+        "60+": 53
+      },
+      "recorrencia": {
+        "Todos": 58,
+        "Recorrente": 65,
+        "Primeiro evento": 49
+      },
+      "seguimento_status": {
+        "Todos": 58,
+        "Sem seguimento": 68,
+        "Em seguimento": 52
+      }
+    }
+  }
+]

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OESM-SP | Indicadores estratégicos</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+  </head>
+  <body data-page="impact">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <img src="assets/img/logo.svg" alt="Logotipo do OESM-SP">
+          <div class="brand-copy">
+            <span class="brand-kicker">Observatório estratégico</span>
+            <strong class="brand-title">OESM-SP</strong>
+            <span class="brand-subtitle">Saúde mental orientada por dados</span>
+          </div>
+        </div>
+
+        <nav class="nav-group" aria-label="Navegação principal">
+          <span class="nav-label">Navegação</span>
+          <a class="nav-link" data-nav="dashboard" href="dashboard.html"><span class="nav-icon">DX</span><span>Dashboard executivo</span></a>
+          <a class="nav-link" data-nav="territories" href="territorios.html"><span class="nav-icon">TR</span><span>Visão territorial</span></a>
+          <a class="nav-link" data-nav="patients" href="pacientes.html"><span class="nav-icon">PC</span><span>Pacientes priorizados</span></a>
+          <a class="nav-link" data-nav="patient" data-case-link="paciente.html" href="paciente.html?id=PCT-001"><span class="nav-icon">CS</span><span>Caso prioritário</span></a>
+          <a class="nav-link" data-nav="referral" data-case-link="encaminhamento.html" href="encaminhamento.html?id=PCT-001"><span class="nav-icon">PL</span><span>Plano de seguimento</span></a>
+          <a class="nav-link" data-nav="followup" data-case-link="acompanhamento.html" href="acompanhamento.html?id=PCT-001"><span class="nav-icon">AC</span><span>Acompanhamento</span></a>
+          <a class="nav-link" data-nav="impact" href="impacto.html"><span class="nav-icon">IM</span><span>Painel de impacto</span></a>
+        </nav>
+
+        <div class="sidebar-foot">
+          <strong>Painel gerencial</strong>
+          <span>Indicadores estratégicos simulados para demonstrar valor público, cobertura e continuidade do cuidado.</span>
+        </div>
+      </aside>
+
+      <div class="main-shell">
+        <header class="topbar">
+          <div>
+            <div class="breadcrumb"><span>OESM-SP</span><span class="dot"></span><span>Indicadores estratégicos</span></div>
+            <h1 class="page-title">Painel de impacto e prioridades recomendadas</h1>
+            <p class="page-subtitle">
+              Visão gerencial dos resultados esperados com redução de ruptura de seguimento, melhora de cobertura e resposta territorial.
+            </p>
+          </div>
+          <div class="topbar-meta">
+            <div class="generated-at" id="generatedAt"></div>
+            <div class="profile-badge">
+              <span class="profile-avatar">MT</span>
+              <div class="profile-copy">
+                <strong id="userProfileName">Marina Torres</strong>
+                <span id="userProfileRole">Coordenação Estadual de Saúde Mental • SES-SP</span>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <main class="page-content">
+          <section class="metrics-grid" id="impactCards"></section>
+
+          <section class="impact-grid">
+            <article class="panel">
+              <div class="panel-header">
+                <div>
+                  <h2 class="panel-title">Evolução de casos sem seguimento</h2>
+                  <p class="panel-subtitle">Tendência simulada de redução após coordenação do cuidado e pactuação regional.</p>
+                </div>
+              </div>
+              <div id="impactTrendChart"></div>
+            </article>
+
+            <article class="panel">
+              <div class="panel-header">
+                <div>
+                  <h2 class="panel-title">Pacientes acompanhados em até 7 dias</h2>
+                  <p class="panel-subtitle">Proporção de absorção rápida da rede após evento crítico ou alta hospitalar.</p>
+                </div>
+              </div>
+              <div class="progress-list" id="impactAccessBars"></div>
+            </article>
+          </section>
+
+          <section class="impact-grid">
+            <article class="panel">
+              <div class="panel-header">
+                <div>
+                  <h2 class="panel-title">Tempo médio entre alta e primeiro contato</h2>
+                  <p class="panel-subtitle">Janela crítica para evitar ruptura após eventos de maior risco.</p>
+                </div>
+              </div>
+              <div class="time-grid" id="impactTimeCards"></div>
+            </article>
+
+            <article class="panel">
+              <div class="panel-header">
+                <div>
+                  <h2 class="panel-title">Cobertura territorial da rede</h2>
+                  <p class="panel-subtitle">Comparativo resumido entre as regiões monitoradas no protótipo.</p>
+                </div>
+              </div>
+              <div class="compact-list" id="coveragePanel"></div>
+            </article>
+          </section>
+
+          <section class="impact-grid">
+            <article class="panel">
+              <div class="panel-header">
+                <div>
+                  <h2 class="panel-title">Insights estratégicos</h2>
+                  <p class="panel-subtitle">Leituras gerenciais extraídas da combinação entre risco, território e continuidade do cuidado.</p>
+                </div>
+              </div>
+              <div class="insight-list" id="strategicInsights"></div>
+            </article>
+
+            <article class="panel">
+              <div class="panel-header">
+                <div>
+                  <h2 class="panel-title">Prioridades recomendadas</h2>
+                  <p class="panel-subtitle">Ações sugeridas para ampliar impacto e resposta da gestão pública.</p>
+                </div>
+              </div>
+              <div class="insight-list" id="recommendedPriorities"></div>
+            </article>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <script src="assets/js/data-loader.js"></script>
+    <script src="assets/js/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OESM-SP | Detalhe do paciente</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+  </head>
+  <body data-page="patient">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <img src="assets/img/logo.svg" alt="Logotipo do OESM-SP">
+          <div class="brand-copy">
+            <span class="brand-kicker">Observatório estratégico</span>
+            <strong class="brand-title">OESM-SP</strong>
+            <span class="brand-subtitle">Saúde mental orientada por dados</span>
+          </div>
+        </div>
+
+        <nav class="nav-group" aria-label="Navegação principal">
+          <span class="nav-label">Navegação</span>
+          <a class="nav-link" data-nav="dashboard" href="dashboard.html"><span class="nav-icon">DX</span><span>Dashboard executivo</span></a>
+          <a class="nav-link" data-nav="territories" href="territorios.html"><span class="nav-icon">TR</span><span>Visão territorial</span></a>
+          <a class="nav-link" data-nav="patients" href="pacientes.html"><span class="nav-icon">PC</span><span>Pacientes priorizados</span></a>
+          <a class="nav-link" data-nav="patient" data-case-link="paciente.html" href="paciente.html?id=PCT-001"><span class="nav-icon">CS</span><span>Caso prioritário</span></a>
+          <a class="nav-link" data-nav="referral" data-case-link="encaminhamento.html" href="encaminhamento.html?id=PCT-001"><span class="nav-icon">PL</span><span>Plano de seguimento</span></a>
+          <a class="nav-link" data-nav="followup" data-case-link="acompanhamento.html" href="acompanhamento.html?id=PCT-001"><span class="nav-icon">AC</span><span>Acompanhamento</span></a>
+          <a class="nav-link" data-nav="impact" href="impacto.html"><span class="nav-icon">IM</span><span>Painel de impacto</span></a>
+        </nav>
+
+        <div class="sidebar-foot">
+          <strong>Visão integrada do caso</strong>
+          <span>Risco, histórico, vulnerabilidade social, serviços acionados e recomendação analítica.</span>
+        </div>
+      </aside>
+
+      <div class="main-shell">
+        <header class="topbar">
+          <div>
+            <div class="breadcrumb"><span>OESM-SP</span><span class="dot"></span><a href="pacientes.html">Pacientes priorizados</a><span class="dot"></span><span>Detalhe do caso</span></div>
+            <h1 class="page-title" id="patientPageTitle">Caso prioritário</h1>
+            <p class="page-subtitle" id="patientPageSubtitle"></p>
+          </div>
+          <div class="topbar-meta">
+            <div class="generated-at" id="generatedAt"></div>
+            <div class="profile-badge">
+              <span class="profile-avatar">MT</span>
+              <div class="profile-copy">
+                <strong id="userProfileName">Marina Torres</strong>
+                <span id="userProfileRole">Coordenação Estadual de Saúde Mental • SES-SP</span>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <main class="page-content">
+          <section class="panel hero-card" id="patientHero"></section>
+
+          <section class="detail-layout">
+            <article class="panel" id="patientRiskFactors"></article>
+            <article class="panel" id="patientRecentHistory"></article>
+            <article class="panel" id="patientSocialFactors"></article>
+            <article class="panel" id="patientActivatedServices"></article>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <div>
+                <h2 class="panel-title">Timeline do caso</h2>
+                <p class="panel-subtitle">Jornada integrada entre evento agudo, priorização analítica e necessidade de seguimento.</p>
+              </div>
+            </div>
+            <div class="timeline-list" id="patientTimeline"></div>
+          </section>
+
+          <section class="dashboard-grid">
+            <article class="panel" id="patientRecommendation"></article>
+
+            <article class="panel">
+              <div class="panel-header">
+                <div>
+                  <h2 class="panel-title">Continuidade do cuidado</h2>
+                  <p class="panel-subtitle">Alertas para evitar ruptura após alta ou episódio agudo.</p>
+                </div>
+              </div>
+              <div id="patientContinuityAlert"></div>
+              <div class="button-row" style="margin-top: 18px;">
+                <a class="button button-primary" id="patientActionButton" href="encaminhamento.html?id=PCT-001">Acionar rede</a>
+                <a class="button button-secondary" href="pacientes.html">Voltar à lista</a>
+              </div>
+            </article>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <script src="assets/js/data-loader.js"></script>
+    <script src="assets/js/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OESM-SP | Pacientes priorizados</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+  </head>
+  <body data-page="patients">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <img src="assets/img/logo.svg" alt="Logotipo do OESM-SP">
+          <div class="brand-copy">
+            <span class="brand-kicker">Observatório estratégico</span>
+            <strong class="brand-title">OESM-SP</strong>
+            <span class="brand-subtitle">Saúde mental orientada por dados</span>
+          </div>
+        </div>
+
+        <nav class="nav-group" aria-label="Navegação principal">
+          <span class="nav-label">Navegação</span>
+          <a class="nav-link" data-nav="dashboard" href="dashboard.html"><span class="nav-icon">DX</span><span>Dashboard executivo</span></a>
+          <a class="nav-link" data-nav="territories" href="territorios.html"><span class="nav-icon">TR</span><span>Visão territorial</span></a>
+          <a class="nav-link" data-nav="patients" href="pacientes.html"><span class="nav-icon">PC</span><span>Pacientes priorizados</span></a>
+          <a class="nav-link" data-nav="patient" data-case-link="paciente.html" href="paciente.html?id=PCT-001"><span class="nav-icon">CS</span><span>Caso prioritário</span></a>
+          <a class="nav-link" data-nav="referral" data-case-link="encaminhamento.html" href="encaminhamento.html?id=PCT-001"><span class="nav-icon">PL</span><span>Plano de seguimento</span></a>
+          <a class="nav-link" data-nav="followup" data-case-link="acompanhamento.html" href="acompanhamento.html?id=PCT-001"><span class="nav-icon">AC</span><span>Acompanhamento</span></a>
+          <a class="nav-link" data-nav="impact" href="impacto.html"><span class="nav-icon">IM</span><span>Painel de impacto</span></a>
+        </nav>
+
+        <div class="sidebar-foot">
+          <strong>Lista priorizada</strong>
+          <span>Casos ordenados por risco, recorrência, pós-alta recente e atraso no seguimento.</span>
+        </div>
+      </aside>
+
+      <div class="main-shell">
+        <header class="topbar">
+          <div>
+            <div class="breadcrumb"><span>OESM-SP</span><span class="dot"></span><span>Pacientes priorizados</span></div>
+            <h1 class="page-title">Casos com maior necessidade de seguimento</h1>
+            <p class="page-subtitle">
+              Lista simulada para apoiar priorização de pacientes em maior risco de ruptura, recorrência e descontinuidade do cuidado.
+            </p>
+          </div>
+          <div class="topbar-meta">
+            <div class="generated-at" id="generatedAt"></div>
+            <div class="profile-badge">
+              <span class="profile-avatar">MT</span>
+              <div class="profile-copy">
+                <strong id="userProfileName">Marina Torres</strong>
+                <span id="userProfileRole">Coordenação Estadual de Saúde Mental • SES-SP</span>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <main class="page-content">
+          <section class="metrics-grid" id="patientSummaryCards"></section>
+
+          <section class="panel filter-bar">
+            <div class="panel-header">
+              <div>
+                <h2 class="panel-title">Filtros de priorização</h2>
+                <p class="panel-subtitle">Aplicação simples de filtros visuais e busca local por nome mascarado ou ID do caso.</p>
+              </div>
+            </div>
+            <div class="search-row">
+              <div class="filter-pills">
+                <button class="filter-pill active" type="button" data-patient-filter="todos">Todos</button>
+                <button class="filter-pill" type="button" data-patient-filter="risco">Risco alto</button>
+                <button class="filter-pill" type="button" data-patient-filter="semSeguimento">Sem seguimento</button>
+                <button class="filter-pill" type="button" data-patient-filter="recorrente">Recorrente</button>
+                <button class="filter-pill" type="button" data-patient-filter="posAlta">Pós-alta recente</button>
+              </div>
+              <div class="field" style="min-width: 320px;">
+                <label for="patientSearch">Busca por nome ou ID</label>
+                <input id="patientSearch" type="search" placeholder="Ex.: PCT-001 ou A. S. M.">
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <div>
+                <h2 class="panel-title">Tabela de pacientes priorizados</h2>
+                <p class="panel-subtitle">Dados fictícios plausíveis para demonstrar ordenação de risco e navegação até o detalhe do caso.</p>
+              </div>
+            </div>
+
+            <div class="table-wrap" id="patientsTableWrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>ID do caso</th>
+                    <th>Nome mascarado</th>
+                    <th>Idade</th>
+                    <th>Sexo</th>
+                    <th>Município de residência</th>
+                    <th>Município de atendimento</th>
+                    <th>Score de risco</th>
+                    <th>Recorrência</th>
+                    <th>Última ocorrência</th>
+                    <th>Status do seguimento</th>
+                    <th>Ação</th>
+                  </tr>
+                </thead>
+                <tbody id="patientsTableBody"></tbody>
+              </table>
+            </div>
+
+            <div class="empty-state hidden" id="patientsEmptyState">
+              <img src="assets/img/empty-state.svg" alt="">
+              <strong>Nenhum caso encontrado para esse recorte</strong>
+              <p>Altere os filtros ou limpe a busca para voltar a visualizar a lista priorizada do protótipo.</p>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <script src="assets/js/data-loader.js"></script>
+    <script src="assets/js/app.js"></script>
+  </body>
+</html>
