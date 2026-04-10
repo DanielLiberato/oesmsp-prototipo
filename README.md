@@ -23,6 +23,7 @@ oesmsp-prototipo/
   acompanhamento.html
   impacto.html
   README.md
+  screenshots/
   assets/
     css/
       styles.css
@@ -74,21 +75,48 @@ Observação:
 
 ## Screenshots para apresentação
 
-Foi incluído um script para capturar screenshots de todas as telas:
+Foi incluído um fluxo simples de captura com Puppeteer.
+
+### Instalação da dependência mínima
 
 ```bash
-node scripts/capture-screenshots.mjs
+npm install
+```
+
+Isso instala apenas a dependência necessária para automação de navegador e deixa o projeto pronto para captura local.
+
+### Como executar a captura
+
+```bash
+npm run screenshots
 ```
 
 O script:
 
-- sobe um servidor HTTP local temporário em `http://127.0.0.1:4173`;
-- percorre todas as páginas do protótipo;
-- salva as imagens na pasta `screenshots/`.
+- sobe um servidor HTTP local temporário automaticamente;
+- abre cada tela em viewport desktop `1440x900`;
+- espera apenas o necessário para a interface terminar de hidratar;
+- ajusta a altura da captura para evitar cortes;
+- salva os arquivos PNG em `screenshots/`.
 
-Requisito para o script:
+### Arquivos gerados
 
-- ter `chromium`, `chromium-browser`, `google-chrome` ou `google-chrome-stable` disponível no `PATH`.
+Os arquivos são salvos com nomes organizados:
+
+- `screenshots/01-login.png`
+- `screenshots/02-dashboard.png`
+- `screenshots/03-territorios.png`
+- `screenshots/04-pacientes.png`
+- `screenshots/05-paciente.png`
+- `screenshots/06-encaminhamento.png`
+- `screenshots/07-acompanhamento.png`
+- `screenshots/08-impacto.png`
+
+Observação:
+
+- Não é necessário abrir o servidor manualmente para a captura, porque o script já cria uma instância temporária local.
+- Em Linux muito enxuto, o navegador headless pode exigir bibliotecas do sistema. Pacotes comuns em Debian/Ubuntu:
+  `libatk1.0-0 libatk-bridge2.0-0 libxdamage1 libgbm1 libxkbcommon0 libatspi2.0-0 fonts-liberation`
 
 ## Observações importantes
 

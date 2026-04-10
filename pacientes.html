@@ -63,8 +63,9 @@
             <div class="panel-header">
               <div>
                 <h2 class="panel-title">Filtros de priorização</h2>
-                <p class="panel-subtitle">Aplicação simples de filtros visuais e busca local por nome mascarado ou ID do caso.</p>
+                <p class="panel-subtitle">Refine o recorte por risco, seguimento, recorrência e janela pós-alta para apoiar decisões de gestão.</p>
               </div>
+              <div class="toolbar-note" id="patientsResultsMeta"></div>
             </div>
             <div class="search-row">
               <div class="filter-pills">
@@ -74,7 +75,7 @@
                 <button class="filter-pill" type="button" data-patient-filter="recorrente">Recorrente</button>
                 <button class="filter-pill" type="button" data-patient-filter="posAlta">Pós-alta recente</button>
               </div>
-              <div class="field" style="min-width: 320px;">
+              <div class="field field-search patient-search-field">
                 <label for="patientSearch">Busca por nome ou ID</label>
                 <input id="patientSearch" type="search" placeholder="Ex.: PCT-001 ou A. S. M.">
               </div>
@@ -101,7 +102,7 @@
                     <th>Município de atendimento</th>
                     <th>Score de risco</th>
                     <th>Recorrência</th>
-                    <th>Última ocorrência</th>
+                    <th>Último evento</th>
                     <th>Status do seguimento</th>
                     <th>Ação</th>
                   </tr>

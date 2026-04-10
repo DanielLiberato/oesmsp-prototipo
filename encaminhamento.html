@@ -55,12 +55,35 @@
         </header>
 
         <main class="page-content">
+          <section class="panel care-flow-panel">
+            <div class="panel-header">
+              <div>
+                <h2 class="panel-title">Fluxo assistencial apoiado pelo observatório</h2>
+                <p class="panel-subtitle">O OESM-SP organiza prioridade, articulação da rede e monitoramento do seguimento em um único fluxo.</p>
+              </div>
+            </div>
+            <div class="status-strip status-strip-compact">
+              <div class="status-step completed">
+                <span class="status-index">1</span>
+                <strong>Caso priorizado</strong>
+              </div>
+              <div class="status-step active">
+                <span class="status-index">2</span>
+                <strong>Plano em composição</strong>
+              </div>
+              <div class="status-step">
+                <span class="status-index">3</span>
+                <strong>Monitoramento pós-evento</strong>
+              </div>
+            </div>
+          </section>
+
           <section class="form-layout">
             <article class="panel">
               <div class="panel-header">
                 <div>
                   <h2 class="panel-title">Acionamento da rede</h2>
-                  <p class="panel-subtitle">Defina serviços, prazo de retorno, prioridade e observações do seguimento.</p>
+                  <p class="panel-subtitle">Defina serviços, prazo de retorno, prioridade assistencial e observações operacionais do seguimento.</p>
                 </div>
               </div>
 
@@ -90,6 +113,11 @@
                   <textarea id="planObservation" placeholder="Registrar estratégia de contato, barreiras de acesso e coordenação entre serviços."></textarea>
                 </div>
 
+                <div class="helper-card">
+                  <strong>Plano assistencial sugerido</strong>
+                  <p>Priorize primeiro contato em até 24 horas quando houver pós-alta recente, deslocamento intermunicipal e vulnerabilidade social combinados.</p>
+                </div>
+
                 <div class="button-row">
                   <button class="button button-primary" type="submit">Confirmar plano</button>
                   <a class="button button-secondary" href="pacientes.html">Cancelar</a>
@@ -101,8 +129,8 @@
             <article class="panel">
               <div class="panel-header">
                 <div>
-                  <h2 class="panel-title">Resumo do caso</h2>
-                  <p class="panel-subtitle">Síntese clínica e social para coordenação de seguimento.</p>
+                  <h2 class="panel-title">Caso priorizado e situação do plano</h2>
+                  <p class="panel-subtitle">Síntese clínica, social e territorial para apoiar a coordenação do cuidado.</p>
                 </div>
               </div>
               <div id="referralPatientSummary"></div>

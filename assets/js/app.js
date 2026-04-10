@@ -123,6 +123,7 @@ function initLoginPage(data) {
 }
 
 function initDashboardPage(data) {
+  renderDashboardExecutiveHero(data);
   renderMetricCards(data.indicators.dashboardCards, document.getElementById("dashboardCards"));
   renderLineChart(
     document.getElementById("dashboardTrendChart"),
@@ -137,6 +138,59 @@ function initDashboardPage(data) {
   renderDashboardCaseFocus(data);
 }
 
+function renderDashboardExecutiveHero(data) {
+  const container = document.getElementById("dashboardExecutiveHero");
+  if (!container) {
+    return;
+  }
+
+  const mainPatient = getPatientById(data, data.indicators.mainCaseId);
+  const mainTerritory = getTerritoryById(data, mainPatient.territorio_id);
+  const topActions = data.indicators.recommendedPriorities.slice(0, 3);
+
+  container.innerHTML = `
+    <div class="executive-hero-main">
+      <span class="hero-eyebrow">Leitura consolidada da rede</span>
+      <h2 class="executive-title">A rede concentra maior pressão assistencial em territórios com fluxo intermunicipal e atraso de seguimento.</h2>
+      <p class="executive-text">
+        O OESM-SP combina sinais assistenciais, epidemiológicos e territoriais para antecipar risco, apoiar coordenação entre serviços
+        e orientar resposta mais rápida da gestão.
+      </p>
+      <div class="executive-highlight-row">
+        <div class="executive-highlight">
+          <span class="summary-label">Território prioritário</span>
+          <strong>${escapeHtml(mainTerritory.regiao)}</strong>
+          <small>${mainTerritory.casos_sem_seguimento} casos sem seguimento e ${mainTerritory.fluxo_intermunicipal}% de fluxo intermunicipal.</small>
+        </div>
+        <div class="executive-highlight">
+          <span class="summary-label">Caso sentinela</span>
+          <strong>${escapeHtml(mainPatient.nome)} • score ${mainPatient.score_risco}</strong>
+          <small>${mainPatient.dias_sem_contato} dias sem contato e ${mainPatient.recorrencia} recorrências no ciclo recente.</small>
+        </div>
+        <div class="executive-highlight">
+          <span class="summary-label">Foco gerencial</span>
+          <strong>Seguimento em até 7 dias</strong>
+          <small>Reduzir ruptura pós-alta e absorver rapidamente os casos de maior prioridade clínica e social.</small>
+        </div>
+      </div>
+    </div>
+    <div class="executive-hero-side">
+      <article class="executive-brief-card">
+        <span class="brief-kicker">Recomendação imediata</span>
+        <strong>${escapeHtml(mainPatient.nome)} requer articulação intersetorial em até 24 horas.</strong>
+        <p>${escapeHtml(mainPatient.analise_recomendada)}</p>
+        <a class="button button-primary" href="${withCaseId("paciente.html", mainPatient.id)}">Abrir caso prioritário</a>
+      </article>
+      <article class="executive-brief-card secondary">
+        <span class="brief-kicker">Ações recomendadas hoje</span>
+        <ul class="micro-list">
+          ${topActions.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+    </div>
+  `;
+}
+
 function renderDashboardAlerts(data) {
   const container = document.getElementById("alertsList");
   if (!container) {
@@ -144,18 +198,22 @@ function renderDashboardAlerts(data) {
   }
 
   container.innerHTML = data.indicators.alerts
-    .map((alert) => {
+    .map((alert, index) => {
       return `
         <a class="alert-item" href="${withCaseId("paciente.html", alert.patientId)}">
-          <div class="alert-head">
-            <strong>${escapeHtml(alert.title)}</strong>
-            <span class="chip chip-danger">${escapeHtml(alert.status)}</span>
+          <span class="alert-index">0${index + 1}</span>
+          <div class="alert-copy">
+            <div class="alert-head">
+              <strong>${escapeHtml(alert.title)}</strong>
+              <span class="chip chip-danger">${escapeHtml(alert.status)}</span>
+            </div>
+            <p>${escapeHtml(alert.description)}</p>
+            <div class="meta-row">
+              <span class="chip">${escapeHtml(alert.category)}</span>
+              <span class="chip chip-soft">${escapeHtml(alert.territory)}</span>
+            </div>
           </div>
-          <p>${escapeHtml(alert.description)}</p>
-          <div class="meta-row">
-            <span class="chip">${escapeHtml(alert.category)}</span>
-            <span class="chip chip-soft">${escapeHtml(alert.territory)}</span>
-          </div>
+          <span class="alert-arrow" aria-hidden="true">→</span>
         </a>
       `;
     })
@@ -171,9 +229,15 @@ function renderQuickActions(actions, container) {
     .map((action) => {
       return `
         <a class="action-card" href="${action.href}">
-          <span class="action-eyebrow">Ação rápida</span>
-          <strong>${escapeHtml(action.label)}</strong>
-          <p>${escapeHtml(action.description)}</p>
+          <span class="action-eyebrow">Ação recomendada</span>
+          <div class="action-main">
+            <span class="action-icon">${iconSvg(actionIconName(action.href))}</span>
+            <div class="action-copy">
+              <strong>${escapeHtml(action.label)}</strong>
+              <p>${escapeHtml(action.description)}</p>
+            </div>
+          </div>
+          <span class="action-link">Abrir módulo</span>
         </a>
       `;
     })
@@ -196,21 +260,25 @@ function renderTerritorySnapshot(data) {
       <div class="summary-stat">
         <span class="summary-label">Território mais crítico</span>
         <strong>${escapeHtml(data.indicators.territorialSummary.mostCritical)}</strong>
+        <small>Maior pressão concentrada no ciclo atual.</small>
       </div>
       <div class="summary-stat">
         <span class="summary-label">Cobertura média da rede</span>
         <strong>${escapeHtml(data.indicators.territorialSummary.networkCoverage)}</strong>
+        <small>Resposta territorial combinando CAPS, UBS e apoio social.</small>
       </div>
       <div class="summary-stat">
         <span class="summary-label">Fluxo intermunicipal</span>
         <strong>${escapeHtml(data.indicators.territorialSummary.crossFlow)}</strong>
+        <small>Casos que atravessam município de residência e atendimento.</small>
       </div>
       <div class="summary-stat">
         <span class="summary-label">Desertos de atendimento</span>
         <strong>${escapeHtml(data.indicators.territorialSummary.deserts)}</strong>
+        <small>Microáreas com menor capacidade de absorção local.</small>
       </div>
     </div>
-    <div class="compact-list">
+    <div class="compact-list territory-ranking-list">
       ${topTerritories
         .map((territory) => {
           return `
@@ -219,7 +287,12 @@ function renderTerritorySnapshot(data) {
                 <strong>${escapeHtml(territory.regiao)}</strong>
                 <span>${territory.casos_sem_seguimento} casos sem seguimento • cobertura ${territory.cobertura_rede}%</span>
               </div>
-              <span class="score-badge ${riskClassByScore(territory.risco_medio)}">${territory.risco_medio}</span>
+              <div class="compact-item-side">
+                <span class="score-badge ${riskClassByScore(territory.risco_medio)}">${territory.risco_medio}</span>
+                <div class="meter compact-meter">
+                  <span style="width:${territory.risco_medio}%"></span>
+                </div>
+              </div>
             </div>
           `;
         })
@@ -245,10 +318,23 @@ function renderDashboardCaseFocus(data) {
       </div>
       <h3>${escapeHtml(patient.nome)}</h3>
       <p>${escapeHtml(patient.resumo)}</p>
+      <div class="case-focus-grid">
+        <div class="hero-metric">
+          <span class="hero-label">Score de risco</span>
+          <strong>${patient.score_risco}</strong>
+        </div>
+        <div class="hero-metric">
+          <span class="hero-label">Recorrência</span>
+          <strong>${patient.recorrencia} eventos</strong>
+        </div>
+        <div class="hero-metric">
+          <span class="hero-label">Dias sem contato</span>
+          <strong>${patient.dias_sem_contato}</strong>
+        </div>
+      </div>
       <div class="detail-pills">
-        <span class="detail-pill">Score ${patient.score_risco}</span>
-        <span class="detail-pill">${patient.recorrencia} recorrências</span>
-        <span class="detail-pill">${patient.dias_sem_contato} dias sem contato</span>
+        <span class="detail-pill">${escapeHtml(patient.prioridade)}</span>
+        <span class="detail-pill">${escapeHtml(patient.municipio_residencia)} → ${escapeHtml(patient.municipio_atendimento)}</span>
       </div>
       <div class="button-row">
         <a class="button button-primary" href="${withCaseId("paciente.html", patient.id)}">Abrir caso</a>
@@ -536,6 +622,7 @@ function renderPatientsTable(data, state) {
   const tableBody = document.getElementById("patientsTableBody");
   const emptyState = document.getElementById("patientsEmptyState");
   const tableWrap = document.getElementById("patientsTableWrap");
+  const resultsMeta = document.getElementById("patientsResultsMeta");
 
   if (!tableBody || !emptyState || !tableWrap) {
     return;
@@ -560,6 +647,13 @@ function renderPatientsTable(data, state) {
 
   filtered.sort((left, right) => right.score_risco - left.score_risco);
 
+  if (resultsMeta) {
+    const filterLabel = describePatientFilter(state.filter);
+    const rawQuery = document.getElementById("patientSearch") ? document.getElementById("patientSearch").value.trim() : "";
+    const queryLabel = rawQuery ? ` • busca por “${rawQuery}”` : "";
+    resultsMeta.textContent = `${filtered.length} casos no recorte atual • ${filterLabel}${queryLabel}`;
+  }
+
   if (!filtered.length) {
     tableWrap.classList.add("hidden");
     emptyState.classList.remove("hidden");
@@ -572,18 +666,43 @@ function renderPatientsTable(data, state) {
   tableBody.innerHTML = filtered
     .map((patient) => {
       return `
-        <tr>
-          <td>${escapeHtml(patient.id)}</td>
-          <td><strong>${escapeHtml(patient.nome)}</strong></td>
-          <td>${patient.idade}</td>
+        <tr class="${patient.score_risco >= 90 ? "row-critical" : ""}">
+          <td><span class="case-id">${escapeHtml(patient.id)}</span></td>
+          <td>
+            <div class="patient-cell">
+              <strong>${escapeHtml(patient.nome)}</strong>
+              <span>${escapeHtml(patient.prioridade)} • ${escapeHtml(patient.status_atual)}</span>
+            </div>
+          </td>
+          <td><span class="numeric-cell">${patient.idade}</span></td>
           <td>${escapeHtml(patient.sexo)}</td>
-          <td>${escapeHtml(patient.municipio_residencia)}</td>
-          <td>${escapeHtml(patient.municipio_atendimento)}</td>
-          <td><span class="score-badge ${riskClassByScore(patient.score_risco)}">${patient.score_risco}</span></td>
-          <td>${patient.recorrencia}</td>
-          <td>${formatDate(patient.ultima_ocorrencia)}</td>
+          <td>
+            <div class="table-territory">
+              <strong>${escapeHtml(patient.municipio_residencia)}</strong>
+              <span>Residência</span>
+            </div>
+          </td>
+          <td>
+            <div class="table-territory">
+              <strong>${escapeHtml(patient.municipio_atendimento)}</strong>
+              <span>Atendimento</span>
+            </div>
+          </td>
+          <td>
+            <div class="score-cell">
+              <span class="score-badge ${riskClassByScore(patient.score_risco)}">${patient.score_risco}</span>
+              <small>${escapeHtml(patient.risco)}</small>
+            </div>
+          </td>
+          <td><span class="count-badge ${patient.recorrencia >= 3 ? "count-badge-strong" : ""}">${patient.recorrencia}x</span></td>
+          <td>
+            <div class="date-cell">
+              <strong>${formatDate(patient.ultima_ocorrencia)}</strong>
+              <span>${patient.pos_alta_dias} dias pós-alta</span>
+            </div>
+          </td>
           <td><span class="table-status ${statusClass(patient.seguimento_status)}">${escapeHtml(patient.seguimento_status)}</span></td>
-          <td><a class="text-link" href="${withCaseId("paciente.html", patient.id)}">Ver caso</a></td>
+          <td><a class="button button-table" href="${withCaseId("paciente.html", patient.id)}">Ver caso</a></td>
         </tr>
       `;
     })
@@ -608,6 +727,7 @@ function initPatientPage(data) {
   }
 
   renderPatientHero(patient);
+  renderPatientIntegratedSummary(patient);
   renderPatientLists(patient);
   renderCaseTimeline(timeline.caseTimeline || buildFallbackTimeline(patient), document.getElementById("patientTimeline"));
   renderPatientRecommendation(patient);
@@ -626,6 +746,7 @@ function renderPatientHero(patient) {
 
   container.innerHTML = `
     <div>
+      <span class="hero-eyebrow">Visão integrada do caso</span>
       <div class="meta-row">
         <span class="chip ${riskChipClass(patient.score_risco)}">Risco ${escapeHtml(patient.risco)}</span>
         <span class="chip chip-soft">${escapeHtml(patient.status_atual)}</span>
@@ -653,6 +774,43 @@ function renderPatientHero(patient) {
         <span class="hero-label">Responsável</span>
         <strong>${escapeHtml(patient.responsavel)}</strong>
       </div>
+      <div class="helper-card helper-card-soft">
+        <strong>Próxima melhor ação</strong>
+        <p>Acionar a rede de cuidado com CAPS, UBS e assistência social para reduzir risco de nova ruptura.</p>
+      </div>
+    </div>
+  `;
+}
+
+function renderPatientIntegratedSummary(patient) {
+  const container = document.getElementById("patientIntegratedSummary");
+  if (!container) {
+    return;
+  }
+
+  const flowType =
+    patient.municipio_residencia === patient.municipio_atendimento ? "Fluxo intramunicipal" : "Fluxo intermunicipal";
+
+  container.innerHTML = `
+    <div class="summary-stat">
+      <span class="summary-label">Score de risco</span>
+      <strong>${patient.score_risco}</strong>
+      <small>Combina recorrência, pós-alta e atraso de seguimento.</small>
+    </div>
+    <div class="summary-stat">
+      <span class="summary-label">Recorrência recente</span>
+      <strong>${patient.recorrencia} eventos</strong>
+      <small>Histórico recente associado a maior risco de nova ruptura.</small>
+    </div>
+    <div class="summary-stat">
+      <span class="summary-label">Janela pós-alta</span>
+      <strong>${patient.pos_alta_dias} dias</strong>
+      <small>Período crítico para absorção rápida pela rede territorial.</small>
+    </div>
+    <div class="summary-stat">
+      <span class="summary-label">Fluxo territorial</span>
+      <strong>${escapeHtml(flowType)}</strong>
+      <small>${escapeHtml(patient.municipio_residencia)} → ${escapeHtml(patient.municipio_atendimento)}</small>
     </div>
   `;
 }
@@ -662,21 +820,25 @@ function renderPatientLists(patient) {
     {
       target: "patientRiskFactors",
       title: "Fatores de risco",
+      subtitle: "Elementos que ampliam a chance de ruptura ou nova recorrência.",
       items: patient.fatores_risco
     },
     {
       target: "patientRecentHistory",
       title: "Histórico recente",
+      subtitle: "Eventos recentes relevantes para priorização e seguimento.",
       items: patient.historico_recente
     },
     {
       target: "patientSocialFactors",
       title: "Vulnerabilidades sociais",
+      subtitle: "Barreiras contextuais que influenciam adesão e continuidade do cuidado.",
       items: patient.vulnerabilidades_sociais
     },
     {
       target: "patientActivatedServices",
       title: "Serviços já acionados",
+      subtitle: "Pontos da rede já sensibilizados ou envolvidos no caso.",
       items: patient.servicos_acionados
     }
   ];
@@ -689,7 +851,9 @@ function renderPatientLists(patient) {
     node.innerHTML = `
       <div class="panel-header">
         <div>
+          <span class="section-eyebrow">Caso integrado</span>
           <h3 class="panel-title">${card.title}</h3>
+          <p class="panel-subtitle">${card.subtitle}</p>
         </div>
       </div>
       <ul class="list">
@@ -726,7 +890,10 @@ function renderCaseTimeline(entries, container) {
     .map((entry) => {
       return `
         <article class="timeline-item timeline-${entry.type || "event"}">
-          <span class="timeline-date">${formatDate(entry.date, true)}</span>
+          <div class="timeline-top">
+            <span class="timeline-date">${formatDate(entry.date, true)}</span>
+            <span class="chip ${timelineChipClass(entry.type)}">${timelineTypeLabel(entry.type)}</span>
+          </div>
           <strong>${escapeHtml(entry.title)}</strong>
           <p>${escapeHtml(entry.details)}</p>
         </article>
@@ -747,15 +914,34 @@ function renderPatientRecommendation(patient) {
           <p class="panel-subtitle">Síntese orientada por risco e continuidade do cuidado</p>
         </div>
       </div>
-      <p>${escapeHtml(patient.analise_recomendada)}</p>
+      <div class="helper-card helper-card-soft">
+        <strong>Próxima melhor ação sugerida pelo observatório</strong>
+        <p>${escapeHtml(patient.analise_recomendada)}</p>
+      </div>
+      <div class="summary-grid plan-summary-grid">
+        <div class="summary-stat">
+          <span class="summary-label">Prioridade combinada</span>
+          <strong>${escapeHtml(patient.prioridade)}</strong>
+          <small>Integra dimensão clínica, social e territorial.</small>
+        </div>
+        <div class="summary-stat">
+          <span class="summary-label">Serviços acionáveis</span>
+          <strong>${patient.servicos_acionados.length}</strong>
+          <small>CAPS, UBS, assistência social e retaguarda quando necessário.</small>
+        </div>
+      </div>
     `;
   }
 
   if (continuity) {
     continuity.innerHTML = `
-      <div class="alert-inline">
-        <span class="chip chip-warning">Continuidade do cuidado</span>
+      <div class="alert-inline alert-inline-critical">
+        <div class="meta-row">
+          <span class="chip chip-warning">Continuidade do cuidado</span>
+          <span class="detail-pill">${patient.dias_sem_contato} dias sem contato</span>
+        </div>
         <p>${escapeHtml(patient.alerta_continuidade)}</p>
+        <small>O sistema recomenda formalizar plano de seguimento antes do encerramento do caso agudo.</small>
       </div>
     `;
   }
@@ -845,28 +1031,37 @@ function renderReferralPatientSummary(patient, timeline) {
     <div class="meta-row">
       <span class="chip ${riskChipClass(patient.score_risco)}">Score ${patient.score_risco}</span>
       <span class="chip chip-soft">${escapeHtml(patient.prioridade)}</span>
+      <span class="chip chip-soft">${escapeHtml(patient.status_atual)}</span>
     </div>
     <h3>${escapeHtml(patient.nome)}</h3>
     <p>${escapeHtml(patient.resumo)}</p>
+    <div class="summary-grid plan-summary-grid">
+      <div class="summary-stat">
+        <span class="summary-label">Status atual</span>
+        <strong>${escapeHtml(patient.seguimento_status)}</strong>
+        <small>${patient.dias_sem_contato} dias sem contato registrado.</small>
+      </div>
+      <div class="summary-stat">
+        <span class="summary-label">Fluxo territorial</span>
+        <strong>${escapeHtml(patient.municipio_residencia)} → ${escapeHtml(patient.municipio_atendimento)}</strong>
+        <small>Coordenação entre residência e atendimento especializado.</small>
+      </div>
+      <div class="summary-stat">
+        <span class="summary-label">Janela pós-alta</span>
+        <strong>${patient.pos_alta_dias} dias</strong>
+        <small>Momento de maior risco para ruptura do vínculo.</small>
+      </div>
+      <div class="summary-stat">
+        <span class="summary-label">Responsável</span>
+        <strong>${escapeHtml(patient.responsavel)}</strong>
+        <small>Ponto focal para pactuação do seguimento.</small>
+      </div>
+    </div>
+    <div class="helper-card helper-card-soft">
+      <strong>Recomendação analítica</strong>
+      <p>${escapeHtml(patient.analise_recomendada)}</p>
+    </div>
     <div class="compact-list">
-      <div class="compact-item">
-        <div>
-          <strong>Status atual</strong>
-          <span>${escapeHtml(patient.seguimento_status)} • ${patient.dias_sem_contato} dias sem contato</span>
-        </div>
-      </div>
-      <div class="compact-item">
-        <div>
-          <strong>Território</strong>
-          <span>${escapeHtml(patient.municipio_residencia)} → ${escapeHtml(patient.municipio_atendimento)}</span>
-        </div>
-      </div>
-      <div class="compact-item">
-        <div>
-          <strong>Recomendação analítica</strong>
-          <span>${escapeHtml(patient.analise_recomendada)}</span>
-        </div>
-      </div>
       <div class="compact-item">
         <div>
           <strong>Alerta de continuidade</strong>
@@ -892,8 +1087,10 @@ function renderServiceOptions(container, storedPlan, defaultServices) {
     return `
       <label class="service-tile ${active ? "active" : ""}">
         <input type="checkbox" name="service" value="${service.key}" ${active ? "checked" : ""}>
+        <span class="service-icon">${iconSvg(service.key)}</span>
         <span class="service-title">${escapeHtml(service.label)}</span>
         <span class="service-text">${escapeHtml(service.description)}</span>
+        <span class="service-state">${active ? "Incluído no plano" : "Disponível para acionamento"}</span>
       </label>
     `;
   }).join("");
@@ -929,29 +1126,40 @@ function updatePlanSummary(container, patient) {
   const noteInput = document.getElementById("planObservation");
 
   container.innerHTML = `
-    <div class="summary-stat">
-      <span class="summary-label">Status do plano</span>
-      <strong>${services.length ? "Pronto para confirmação" : "Seleção incompleta"}</strong>
+    <div class="summary-grid plan-summary-grid">
+      <div class="summary-stat">
+        <span class="summary-label">Status do plano</span>
+        <strong>${services.length ? "Pronto para confirmação" : "Seleção incompleta"}</strong>
+        <small>${services.length ? "Plano com serviços mínimos definidos." : "Selecione ao menos um serviço da rede."}</small>
+      </div>
+      <div class="summary-stat">
+        <span class="summary-label">Serviços acionados</span>
+        <strong>${services.length ? services.length : 0}</strong>
+        <small>${services.length ? services.map((service) => service.shortLabel).join(", ") : "Nenhum serviço selecionado"}</small>
+      </div>
+      <div class="summary-stat">
+        <span class="summary-label">Prazo de retorno</span>
+        <strong>${deadlineInput && deadlineInput.value ? formatDate(deadlineInput.value) : "Não definido"}</strong>
+        <small>Prazo pactuado para reconexão do cuidado.</small>
+      </div>
+      <div class="summary-stat">
+        <span class="summary-label">Prioridade</span>
+        <strong>${priorityInput ? escapeHtml(priorityInput.value) : "Alta"}</strong>
+        <small>Critério assistencial para priorização da resposta.</small>
+      </div>
+      <div class="summary-stat">
+        <span class="summary-label">Observação</span>
+        <strong>${noteInput && noteInput.value ? escapeHtml(noteInput.value) : "Sem observação adicional"}</strong>
+        <small>Registro visível para coordenação de rede.</small>
+      </div>
+      <div class="summary-stat">
+        <span class="summary-label">Caso</span>
+        <strong>${escapeHtml(patient.nome)} • Score ${patient.score_risco}</strong>
+        <small>${escapeHtml(patient.prioridade)} • ${patient.dias_sem_contato} dias sem contato.</small>
+      </div>
     </div>
-    <div class="summary-stat">
-      <span class="summary-label">Serviços acionados</span>
-      <strong>${services.length ? services.map((service) => service.shortLabel).join(", ") : "Nenhum serviço selecionado"}</strong>
-    </div>
-    <div class="summary-stat">
-      <span class="summary-label">Prazo de retorno</span>
-      <strong>${deadlineInput && deadlineInput.value ? formatDate(deadlineInput.value) : "Não definido"}</strong>
-    </div>
-    <div class="summary-stat">
-      <span class="summary-label">Prioridade</span>
-      <strong>${priorityInput ? escapeHtml(priorityInput.value) : "Alta"}</strong>
-    </div>
-    <div class="summary-stat">
-      <span class="summary-label">Observação</span>
-      <strong>${noteInput && noteInput.value ? escapeHtml(noteInput.value) : "Sem observação adicional"}</strong>
-    </div>
-    <div class="summary-stat">
-      <span class="summary-label">Caso</span>
-      <strong>${escapeHtml(patient.nome)} • Score ${patient.score_risco}</strong>
+    <div class="plan-service-pills">
+      ${services.length ? services.map((service) => `<span class="detail-pill">${escapeHtml(service.shortLabel)}</span>`).join("") : '<span class="detail-pill">Nenhum serviço selecionado</span>'}
     </div>
   `;
 }
@@ -1028,7 +1236,7 @@ function renderFollowupScene(patient, timeline, storedPlan) {
 
   renderMetricCards(summaryCards, document.getElementById("followupSummaryCards"), true);
   renderFollowupStatus(currentStatus);
-  renderFollowupPlan(patient, storedPlan, timeline, daysWithoutContact);
+  renderFollowupPlan(patient, storedPlan, timeline, daysWithoutContact, currentStatus);
   renderCaseTimeline(buildFollowupTimeline(timeline, storedPlan), document.getElementById("followupTimeline"));
 
   const backButton = document.getElementById("backToDashboard");
@@ -1043,54 +1251,67 @@ function renderFollowupStatus(currentStatus) {
     return;
   }
 
-  container.innerHTML = STATUS_OPTIONS.map((status) => {
+  const currentIndex = Math.max(0, STATUS_OPTIONS.indexOf(currentStatus));
+
+  container.innerHTML = STATUS_OPTIONS.map((status, index) => {
+    const stateClass = status === currentStatus ? "active" : index < currentIndex ? "completed" : "";
+    const stateLabel = status === currentStatus ? "Etapa atual" : index < currentIndex ? "Concluído" : "Pendente";
     return `
-      <div class="status-step ${status === currentStatus ? "active" : ""}">
-        <span class="status-index">${STATUS_OPTIONS.indexOf(status) + 1}</span>
+      <div class="status-step ${stateClass}">
+        <span class="status-index">${index + 1}</span>
         <strong>${escapeHtml(status)}</strong>
+        <small>${stateLabel}</small>
       </div>
     `;
   }).join("");
 }
 
-function renderFollowupPlan(patient, storedPlan, timeline, daysWithoutContact) {
+function renderFollowupPlan(patient, storedPlan, timeline, daysWithoutContact, currentStatus) {
   const summary = document.getElementById("followupPlanSummary");
   const alert = document.getElementById("followupAlert");
   const services = storedPlan.services || timeline.planTemplate?.services || [];
+  const priority = storedPlan.priority || timeline.planTemplate?.priority || patient.prioridade;
 
   if (summary) {
     summary.innerHTML = `
       <div class="panel-header">
         <div>
           <h3 class="panel-title">Plano de seguimento</h3>
-          <p class="panel-subtitle">A alta não encerra o cuidado. O caso segue em monitoramento até absorção efetiva da rede.</p>
+          <p class="panel-subtitle">A alta não encerra o cuidado. O caso segue monitorado até absorção efetiva da rede.</p>
         </div>
       </div>
-      <div class="compact-list">
-        <div class="compact-item">
-          <div>
-            <strong>Serviços acionados</strong>
-            <span>${services.length ? services.map((service) => service.shortLabel || service.name || service.label).join(", ") : "Plano ainda não confirmado"}</span>
-          </div>
+      <div class="meta-row">
+        <span class="chip ${statusChipClass(currentStatus)}">${escapeHtml(currentStatus)}</span>
+        <span class="chip chip-soft">Prioridade ${escapeHtml(priority)}</span>
+      </div>
+      <div class="plan-service-pills">
+        ${services.length ? services.map((service) => `<span class="detail-pill">${escapeHtml(service.shortLabel || service.name || service.label)}</span>`).join("") : '<span class="detail-pill">Plano ainda não confirmado</span>'}
+      </div>
+      <div class="summary-grid plan-summary-grid">
+        <div class="summary-stat">
+          <span class="summary-label">Prazo de retorno</span>
+          <strong>${storedPlan.returnDeadline ? formatDate(storedPlan.returnDeadline) : timeline.planTemplate?.returnDeadline ? formatDate(timeline.planTemplate.returnDeadline) : "Não definido"}</strong>
+          <small>Prazo pactuado para reconexão do cuidado.</small>
         </div>
-        <div class="compact-item">
-          <div>
-            <strong>Prazo de retorno</strong>
-            <span>${storedPlan.returnDeadline ? formatDate(storedPlan.returnDeadline) : timeline.planTemplate?.returnDeadline ? formatDate(timeline.planTemplate.returnDeadline) : "Não definido"}</span>
-          </div>
+        <div class="summary-stat">
+          <span class="summary-label">Responsável</span>
+          <strong>${escapeHtml(timeline.responsibleTeam || patient.responsavel)}</strong>
+          <small>Ponto focal para monitoramento do caso.</small>
         </div>
-        <div class="compact-item">
-          <div>
-            <strong>Observação</strong>
-            <span>${escapeHtml(storedPlan.observation || timeline.planTemplate?.observation || "Sem observação adicional.")}</span>
-          </div>
+        <div class="summary-stat">
+          <span class="summary-label">Último registro</span>
+          <strong>${storedPlan.confirmedAt ? formatDate(storedPlan.confirmedAt, true) : "Sem confirmação formal"}</strong>
+          <small>Momento mais recente de atualização do plano.</small>
         </div>
-        <div class="compact-item">
-          <div>
-            <strong>Caso monitorado</strong>
-            <span>${escapeHtml(patient.nome)} • ${patient.municipio_residencia} → ${patient.municipio_atendimento}</span>
-          </div>
+        <div class="summary-stat">
+          <span class="summary-label">Caso monitorado</span>
+          <strong>${escapeHtml(patient.nome)}</strong>
+          <small>${escapeHtml(patient.municipio_residencia)} → ${escapeHtml(patient.municipio_atendimento)}</small>
         </div>
+      </div>
+      <div class="helper-card helper-card-soft">
+        <strong>Observação do plano</strong>
+        <p>${escapeHtml(storedPlan.observation || timeline.planTemplate?.observation || "Sem observação adicional.")}</p>
       </div>
     `;
   }
@@ -1104,7 +1325,10 @@ function renderFollowupPlan(patient, storedPlan, timeline, daysWithoutContact) {
 
     alert.innerHTML = `
       <div class="alert-inline">
-        <span class="chip ${tone}">Alerta de prazo</span>
+        <div class="meta-row">
+          <span class="chip ${tone}">Alerta de prazo</span>
+          <span class="detail-pill">${daysWithoutContact} dias sem contato</span>
+        </div>
         <p>${escapeHtml(text)}</p>
       </div>
     `;
@@ -1118,6 +1342,7 @@ function buildFollowupTimeline(timeline, storedPlan) {
 }
 
 function initImpactPage(data) {
+  renderImpactExecutiveHero(data);
   renderMetricCards(data.indicators.impactCards, document.getElementById("impactCards"), true);
   renderLineChart(
     document.getElementById("impactTrendChart"),
@@ -1133,6 +1358,45 @@ function initImpactPage(data) {
   renderCoveragePanel(data.territories, document.getElementById("coveragePanel"));
 }
 
+function renderImpactExecutiveHero(data) {
+  const container = document.getElementById("impactExecutiveHero");
+  if (!container) {
+    return;
+  }
+
+  container.innerHTML = `
+    <div class="executive-hero-main">
+      <span class="hero-eyebrow">Valor para a gestão pública</span>
+      <h2 class="executive-title">Os indicadores simulados apontam redução de ruptura de cuidado e melhora progressiva da resposta territorial.</h2>
+      <p class="executive-text">
+        O painel estratégico sintetiza resultados para apoiar pactuação regional, priorização de recursos e monitoramento da continuidade do cuidado.
+      </p>
+      <div class="executive-highlight-row">
+        ${data.indicators.impactCards.slice(0, 3).map((card) => `
+          <div class="executive-highlight">
+            <span class="summary-label">${escapeHtml(card.label)}</span>
+            <strong>${escapeHtml(String(card.value))}</strong>
+            <small>${escapeHtml(card.detail)}</small>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+    <div class="executive-hero-side">
+      <article class="executive-brief-card">
+        <span class="brief-kicker">Direcionador estratégico</span>
+        <strong>${escapeHtml(data.indicators.recommendedPriorities[0])}</strong>
+        <p>${escapeHtml(data.indicators.strategicInsights[0])}</p>
+      </article>
+      <article class="executive-brief-card secondary">
+        <span class="brief-kicker">Prioridades para gestores</span>
+        <ul class="micro-list">
+          ${data.indicators.recommendedPriorities.slice(0, 3).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+    </div>
+  `;
+}
+
 function renderProgressComparison(series, container) {
   if (!container) {
     return;
@@ -1144,11 +1408,12 @@ function renderProgressComparison(series, container) {
         <div class="progress-row">
           <div class="progress-head">
             <strong>${escapeHtml(entry.label)}</strong>
-            <span>${entry.ate7dias}% em até 7 dias</span>
+            <span class="progress-value">${entry.ate7dias}%</span>
           </div>
           <div class="meter">
             <span style="width:${entry.ate7dias}%"></span>
           </div>
+          <small class="progress-caption">Pacientes acompanhados em até 7 dias</small>
         </div>
       `;
     })
@@ -1161,9 +1426,9 @@ function renderAverageTimeCards(series, container) {
   }
 
   container.innerHTML = series
-    .map((entry) => {
+    .map((entry, index) => {
       return `
-        <div class="time-card">
+        <div class="time-card ${index === series.length - 1 ? "latest" : ""}">
           <span>${escapeHtml(entry.label)}</span>
           <strong>${entry.tempoMedio.toFixed(1).replace(".", ",")} dias</strong>
           <small>Entre alta e primeiro contato</small>
@@ -1179,9 +1444,13 @@ function renderInsightList(items, container, tone) {
   }
 
   container.innerHTML = items
-    .map((item) => {
+    .map((item, index) => {
       return `
         <article class="insight-card ${tone}">
+          <div class="insight-head">
+            <span class="insight-kicker">${tone === "priority" ? "Prioridade recomendada" : "Insight estratégico"}</span>
+            <span class="insight-index">0${index + 1}</span>
+          </div>
           <p>${escapeHtml(item)}</p>
         </article>
       `;
@@ -1199,12 +1468,15 @@ function renderCoveragePanel(territories, container) {
     .sort((left, right) => right.cobertura_rede - left.cobertura_rede)
     .map((territory) => {
       return `
-        <div class="compact-item">
+        <div class="compact-item coverage-item">
           <div>
             <strong>${escapeHtml(territory.regiao)}</strong>
             <span>${territory.cobertura_rede}% de cobertura • ${territory.status}</span>
+            <div class="meter compact-meter">
+              <span style="width:${territory.cobertura_rede}%"></span>
+            </div>
           </div>
-          <span class="score-badge ${riskClassByScore(100 - territory.cobertura_rede)}">${territory.cobertura_rede}%</span>
+          <span class="coverage-badge ${coverageBadgeClass(territory.cobertura_rede)}">${territory.cobertura_rede}%</span>
         </div>
       `;
     })
@@ -1222,10 +1494,16 @@ function renderMetricCards(cards, container, compact) {
       const trendClass = card.trend ? "trend-" + card.trend : "";
       return `
         <article class="metric-card ${toneClass}">
+          <div class="metric-head">
+            <span class="metric-icon">${iconSvg(metricIconName(card))}</span>
+            <span class="metric-trend ${trendClass}">${trendLabel(card.trend)}</span>
+          </div>
           <span class="metric-label">${escapeHtml(card.label)}</span>
           <strong class="metric-value ${compact ? "compact" : ""}">${escapeHtml(String(card.value))}</strong>
           <p class="metric-context">${escapeHtml(card.context || card.detail || "")}</p>
-          <span class="metric-delta ${trendClass}">${escapeHtml(card.delta || "")}</span>
+          <div class="metric-footer">
+            <span class="metric-delta ${trendClass}">${escapeHtml(card.delta || "")}</span>
+          </div>
         </article>
       `;
     })
@@ -1375,6 +1653,138 @@ function statusEventDescription(status) {
     Acolhido: "Acolhimento confirmado por serviço da rede com continuidade pactuada.",
     "Retorno agendado": "Retorno programado no território e monitoramento compartilhado ativo."
   }[status];
+}
+
+function statusChipClass(status) {
+  return {
+    Encaminhado: "chip-primary",
+    "Contato pendente": "chip-warning",
+    "Tentativa sem resposta": "chip-danger",
+    Acolhido: "chip-success",
+    "Retorno agendado": "chip-primary"
+  }[status] || "chip-soft";
+}
+
+function coverageBadgeClass(value) {
+  if (value >= 80) {
+    return "coverage-high";
+  }
+  if (value >= 70) {
+    return "coverage-medium";
+  }
+  return "coverage-low";
+}
+
+function describePatientFilter(filter) {
+  return {
+    todos: "todos os casos priorizados",
+    risco: "risco alto",
+    semSeguimento: "sem seguimento",
+    recorrente: "casos recorrentes",
+    posAlta: "pós-alta recente"
+  }[filter] || "todos os casos";
+}
+
+function timelineTypeLabel(type) {
+  return {
+    event: "Evento",
+    analysis: "Análise",
+    network: "Rede",
+    alert: "Alerta"
+  }[type] || "Registro";
+}
+
+function timelineChipClass(type) {
+  return {
+    event: "chip-primary",
+    analysis: "chip-soft",
+    network: "chip-warning",
+    alert: "chip-danger"
+  }[type] || "chip-soft";
+}
+
+function trendLabel(trend) {
+  return {
+    up: "Alta",
+    down: "Queda",
+    neutral: "Estável"
+  }[trend] || "Estável";
+}
+
+function actionIconName(href) {
+  if (href.includes("pacientes")) {
+    return "patient";
+  }
+  if (href.includes("territorios")) {
+    return "territory";
+  }
+  if (href.includes("encaminhamento") || href.includes("paciente")) {
+    return "network";
+  }
+  if (href.includes("impacto")) {
+    return "impact";
+  }
+  return "dashboard";
+}
+
+function metricIconName(card) {
+  const id = (card.id || "").toLowerCase();
+  const label = (card.label || "").toLowerCase();
+  const full = id + " " + label;
+
+  if (full.includes("risk") || full.includes("risco")) {
+    return "risk";
+  }
+  if (full.includes("seguimento")) {
+    return "followup";
+  }
+  if (full.includes("territ")) {
+    return "territory";
+  }
+  if (full.includes("encaminhamento")) {
+    return "network";
+  }
+  if (full.includes("redução") || full.includes("impacto")) {
+    return "impact";
+  }
+  if (full.includes("cobertura")) {
+    return "territory";
+  }
+  if (full.includes("tempo")) {
+    return "clock";
+  }
+  return "dashboard";
+}
+
+function iconSvg(name) {
+  const icons = {
+    dashboard:
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="8" height="7" rx="2"></rect><rect x="13" y="4" width="8" height="12" rx="2"></rect><rect x="3" y="13" width="8" height="7" rx="2"></rect><rect x="13" y="18" width="8" height="2" rx="1"></rect></svg>',
+    patient:
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M5 20c1.4-3.6 4-5.4 7-5.4S17.6 16.4 19 20"></path></svg>',
+    territory:
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6l6-2 4 2 6-2v14l-6 2-4-2-6 2z"></path><path d="M10 4v14"></path><path d="M14 6v14"></path></svg>',
+    network:
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="12" r="2.5"></circle><circle cx="18" cy="7" r="2.5"></circle><circle cx="18" cy="17" r="2.5"></circle><path d="M8.2 11l7.4-3"></path><path d="M8.2 13l7.4 3"></path></svg>',
+    impact:
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19V9"></path><path d="M12 19V5"></path><path d="M19 19v-7"></path><path d="M4 19h16"></path></svg>',
+    risk:
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 4v5c0 5-3.1 8-8 9-4.9-1-8-4-8-9V7z"></path><path d="M12 8v5"></path><circle cx="12" cy="16.5" r="1"></circle></svg>',
+    followup:
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7v5l3 3"></path><circle cx="12" cy="12" r="8"></circle></svg>',
+    clock:
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l3 2"></path></svg>',
+    caps:
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V9l8-5 8 5v10"></path><path d="M9 19v-5h6v5"></path></svg>',
+    ubs:
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V7h14v13"></path><path d="M9 11h6"></path><path d="M12 8v6"></path></svg>',
+    social:
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="9" r="3"></circle><circle cx="16" cy="9" r="3"></circle><path d="M4 20c.8-3 2.9-4.5 5.3-4.5"></path><path d="M20 20c-.8-3-2.9-4.5-5.3-4.5"></path></svg>',
+    hospital:
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 20V6h12v14"></path><path d="M9 9h6"></path><path d="M12 6v6"></path></svg>'
+  };
+
+  return icons[name] || icons.dashboard;
 }
 
 function getStoredPlan(patientId) {

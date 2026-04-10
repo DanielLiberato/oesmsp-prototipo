@@ -55,17 +55,40 @@
         </header>
 
         <main class="page-content">
+          <section class="panel care-flow-panel">
+            <div class="panel-header">
+              <div>
+                <h2 class="panel-title">Seguimento orientado por continuidade do cuidado</h2>
+                <p class="panel-subtitle">O caso permanece monitorado até confirmação de acolhimento e retorno protegido na rede.</p>
+              </div>
+            </div>
+            <div class="status-strip status-strip-compact">
+              <div class="status-step completed">
+                <span class="status-index">1</span>
+                <strong>Caso priorizado</strong>
+              </div>
+              <div class="status-step completed">
+                <span class="status-index">2</span>
+                <strong>Plano confirmado</strong>
+              </div>
+              <div class="status-step active">
+                <span class="status-index">3</span>
+                <strong>Acompanhamento em curso</strong>
+              </div>
+            </div>
+          </section>
+
           <section class="metrics-grid" id="followupSummaryCards"></section>
 
           <section class="panel">
             <div class="panel-header">
               <div>
                 <h2 class="panel-title">Status visual do caso</h2>
-                <p class="panel-subtitle">Marque a evolução do seguimento para simular o monitoramento da rede.</p>
+                <p class="panel-subtitle">Atualize a etapa do caso para simular monitoramento, acolhimento e retorno agendado.</p>
               </div>
             </div>
             <div class="status-strip" id="followupStatusStrip"></div>
-            <div class="button-row" style="margin-top: 18px;">
+            <div class="button-row status-action-bar" style="margin-top: 18px;">
               <button class="button button-secondary" type="button" data-status-action="Encaminhado">Encaminhado</button>
               <button class="button button-secondary" type="button" data-status-action="Contato pendente">Contato pendente</button>
               <button class="button button-secondary" type="button" data-status-action="Tentativa sem resposta">Tentativa sem resposta</button>

@@ -1,0 +1,13 @@
+{
+  "name": "oesmsp-prototipo",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "serve": "node scripts/serve.mjs",
+    "screenshots": "node scripts/capture-screenshots.mjs"
+  },
+  "dependencies": {
+    "puppeteer": "^24.7.2"
+  }
+}
