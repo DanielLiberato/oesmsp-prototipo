@@ -61,17 +61,51 @@ oesmsp-prototipo/
 8. `impacto.html`
    Painel executivo de impacto com métricas estratégicas, tendências e prioridades recomendadas.
 
-## Como abrir localmente
+## Como testar localmente no macOS
 
-Opção mais simples:
+O projeto é um protótipo estático em HTML, CSS e JavaScript. Para uma demonstração rápida, não é necessário subir servidor web.
 
-1. Abra `index.html` diretamente no navegador.
-2. Navegue entre as telas usando o menu lateral e os botões do fluxo principal.
+### Opção 1: abrir o HTML diretamente
 
-Observação:
+Use esta opção para navegar pelo protótipo e validar as telas sem instalar nada.
 
-- O protótipo funciona em `file://` porque usa fallback local em JavaScript.
-- Os arquivos JSON em `assets/data/` permanecem no projeto para edição e referência dos dados fictícios.
+1. No Finder, abra a pasta do projeto.
+2. Dê duplo clique em `index.html`.
+3. Navegue entre as telas usando o menu lateral e os botões do fluxo principal.
+
+Também é possível abrir pelo Terminal:
+
+```bash
+open index.html
+```
+
+Nesta opção, o navegador abre o projeto como `file://`. Isso funciona porque o JavaScript possui um conjunto de dados demonstrativos embutido como fallback.
+
+Importante: ao abrir por `file://`, alterações feitas apenas nos arquivos JSON de `assets/data/` não serão carregadas pelo navegador. Para testar mudanças nesses JSON, use a opção com servidor local.
+
+### Opção 2: subir servidor local com Node
+
+Use esta opção quando quiser testar o projeto em `http://localhost`, validar alterações nos arquivos JSON de `assets/data/` ou reproduzir um ambiente mais próximo de hospedagem estática.
+
+Pré-requisito:
+
+- Node.js instalado no macOS.
+
+Com Node instalado, execute:
+
+```bash
+npm run serve
+```
+
+Depois abra no navegador:
+
+```text
+http://127.0.0.1:4173
+```
+
+Para parar o servidor, pressione `Ctrl+C` no Terminal.
+
+Observação: `npm install` não é necessário para rodar `npm run serve`, porque o servidor local usa apenas recursos nativos do Node. A instalação das dependências só é necessária para gerar screenshots automatizados.
 
 ## Screenshots para apresentação
 
